@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RAJAT MUNGALI | Web-Slinger Developer</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Rajdhani:wght@400;600;700&family=Roboto:wght@300;400;900&family=Koulen&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "spidey-red": "#E62429",
+              "spidey-blue": "#204B9B",
+              "spidey-dark-blue": "#0a1f45",
+              "miles-black": "#0f0f0f",
+              "miles-red": "#FF0040",
+              "gwen-pink": "#FF0080",
+              "gwen-cyan": "#00FFFF",
+              "neon-green": "#00ff41",
+            },
+            fontFamily: {
+              comic: ["Bangers", "cursive"],
+              hud: ["Rajdhani", "sans-serif"],
+              sans: ["Roboto", "sans-serif"],
+              display: ["Koulen", "sans-serif"],
+            },
+            backgroundImage: {
+              halftone:
+                "radial-gradient(circle, #E62429 1px, transparent 1.5px)",
+              "halftone-blue":
+                "radial-gradient(circle, #204B9B 1px, transparent 1.5px)",
+              "hex-grid":
+                'url(\'data:image/svg+xml,%3Csvg width="24" height="40" viewBox="0 0 24 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M0 40c5.523 0 10-4.477 10-10V10c0-5.523-4.477-10-10-10s-10 4.477-10 10v20c0 5.523 4.477 10 10 10z" fill="%23204B9B" fill-opacity="0.05" fill-rule="evenodd"/%3E%3C/svg%3E\')',
+            },
+            animation: {
+              float: "float 6s ease-in-out infinite",
+              "pulse-neon":
+                "pulseNeon 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              glitch: "glitch 2.5s infinite",
+              scan: "scan 4s linear infinite",
+              "spin-slow": "spin 10s linear infinite",
+            },
+            keyframes: {
+              float: {
+                "0%, 100%": { transform: "translateY(0)" },
+                "50%": { transform: "translateY(-15px)" },
+              },
+              pulseNeon: {
+                "0%, 100%": {
+                  opacity: "1",
+                  filter: "drop-shadow(0 0 5px #E62429)",
+                },
+                "50%": {
+                  opacity: ".6",
+                  filter: "drop-shadow(0 0 15px #E62429)",
+                },
+              },
+              glitch: {
+                "0%": { textShadow: "2px 2px #ff0040, -2px -2px #00ffff" },
+                "25%": { textShadow: "-2px 2px #ff0040, 2px -2px #00ffff" },
+                "50%": { textShadow: "2px -2px #ff0040, -2px 2px #00ffff" },
+                "75%": { textShadow: "-2px -2px #ff0040, 2px 2px #00ffff" },
+                "100%": { textShadow: "2px 2px #ff0040, -2px -2px #00ffff" },
+              },
+              scan: {
+                "0%": { backgroundPosition: "0% 0%" },
+                "100%": { backgroundPosition: "0% 100%" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f0f0f;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #e62429;
+        border-radius: 0px;
+      }
+
+      /* Comic Styling */
+      .comic-panel {
+        border: 4px solid black;
+        box-shadow: 8px 8px 0px rgba(0, 0, 0, 1);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .comic-panel:hover {
+        transform: translate(-4px, -4px);
+        box-shadow: 12px 12px 0px #e62429;
+      }
+
+      .text-stroke-sm {
+        -webkit-text-stroke: 1px black;
+      }
+      .text-stroke {
+        -webkit-text-stroke: 2px black;
+      }
+
+      .clip-angled {
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+      }
+      .clip-tag {
+        clip-path: polygon(10% 0, 100% 0, 100% 50%, 90% 100%, 0 100%, 0 50%);
+      }
+
+      /* Glitch Text */
+      .glitch-container {
+        position: relative;
+      }
+      .glitch-layer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .glitch-layer:nth-child(1) {
+        color: #ff0040;
+        clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        transform: translate(-2px, 0);
+        animation: glitch 3s infinite linear alternate-reverse;
+        opacity: 0.8;
+      }
+      .glitch-layer:nth-child(2) {
+        color: #00ffff;
+        clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        transform: translate(2px, 0);
+        animation: glitch 2.5s infinite linear alternate-reverse;
+        opacity: 0.8;
+      }
+
+      /* Holographic Card */
+      .holo-card {
+        background: rgba(16, 24, 39, 0.8);
+        border: 1px solid rgba(0, 255, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+      .holo-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(
+          transparent 50%,
+          rgba(0, 255, 255, 0.05) 50%
+        );
+        background-size: 100% 4px;
+        pointer-events: none;
+      }
+      .holo-card:hover {
+        border-color: #00ffff;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-miles-black text-white font-sans overflow-x-hidden selection:bg-spidey-red selection:text-white"
+  >
+    <nav
+      class="fixed w-full z-50 top-0 bg-miles-black/90 backdrop-blur-lg border-b border-spidey-red/30"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-10 h-10 bg-spidey-red flex items-center justify-center rounded-sm comic-panel shadow-none hover:translate-x-0 hover:translate-y-0 hover:shadow-none"
+            >
+              <i class="fas fa-spider text-white text-2xl"></i>
+            </div>
+            <span class="font-comic text-2xl tracking-wide"
+              >RAJAT<span class="text-spidey-red">MUNGALI</span></span
+            >
+          </div>
+
+          <div
+            class="hidden md:flex space-x-8 font-hud uppercase tracking-widest text-sm font-bold text-gray-400"
+          >
+            <a
+              href="#about"
+              class="hover:text-white hover:text-shadow-glow transition-all"
+              >Identity</a
+            >
+            <a href="#skills" class="hover:text-spidey-blue transition-all"
+              >Gadgets</a
+            >
+            <a href="#projects" class="hover:text-spidey-red transition-all"
+              >Missions</a
+            >
+            <a href="#contact" class="hover:text-gwen-pink transition-all"
+              >Signal</a
+            >
+          </div>
+          <a
+            href="#contact"
+            class="hidden md:block px-6 py-2 bg-spidey-blue hover:bg-blue-700 text-white font-comic text-lg tracking-wider skew-x-[-10deg] border-2 border-white transition-all"
+          >
+            <span class="block skew-x-[10deg]">HIRE ME</span>
+          </a>
+
+          <button
+            id="menu-btn"
+            class="md:hidden text-white text-2xl focus:outline-none"
+          >
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden absolute top-20 left-0 w-full bg-miles-black/95 backdrop-blur-lg border-b border-spidey-red/30 p-6 flex flex-col gap-4 shadow-2xl"
+      >
+        <a
+          href="#about"
+          class="text-white font-hud uppercase tracking-widest text-lg border-b border-gray-800 pb-2"
+          >Identity</a
+        >
+        <a
+          href="#skills"
+          class="text-white font-hud uppercase tracking-widest text-lg border-b border-gray-800 pb-2"
+          >Gadgets</a
+        >
+        <a
+          href="#projects"
+          class="text-white font-hud uppercase tracking-widest text-lg border-b border-gray-800 pb-2"
+          >Missions</a
+        >
+        <a
+          href="#contact"
+          class="text-white font-hud uppercase tracking-widest text-lg border-b border-gray-800 pb-2"
+          >Signal</a
+        >
+        <a
+          href="#contact"
+          class="text-center px-6 py-2 bg-spidey-blue hover:bg-blue-700 text-white font-comic text-lg tracking-wider border-2 border-white"
+          >HIRE ME</a
+        >
+      </div>
+    </nav>
+
+    <section
+      class="relative h-screen flex items-center justify-center overflow-hidden"
+    >
+      <div class="absolute inset-0 overflow-hidden">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class="w-full h-full object-contain bg-black mx-auto"
+        >
+          <source src="vid.mp4" type="video/mp4" />
+        </video>
+        <svg
+          class="absolute top-0 right-0 w-full h-full opacity-10 pointer-events-none"
+          viewBox="0 0 800 800"
+        >
+          <path
+            d="M400,400 L800,0 M400,400 L800,200 M400,400 L800,400 M400,400 L800,600 M400,400 L800,800"
+            stroke="rgba(230, 36, 41, 0.5)"
+            stroke-width="1"
+          />
+          <circle
+            cx="400"
+            cy="400"
+            r="100"
+            fill="none"
+            stroke="rgba(230, 36, 41, 0.3)"
+            stroke-width="1"
+          />
+          <circle
+            cx="400"
+            cy="400"
+            r="200"
+            fill="none"
+            stroke="rgba(230, 36, 41, 0.2)"
+            stroke-width="1"
+          />
+          <circle
+            cx="400"
+            cy="400"
+            r="300"
+            fill="none"
+            stroke="rgba(230, 36, 41, 0.1)"
+            stroke-width="1"
+          />
+        </svg>
+      </div>
+
+      <div
+        class="absolute bottom-0 w-full h-64 bg-gradient-to-t from-black via-black/80 to-transparent z-10"
+      ></div>
+
+      <div class="relative z-20 text-center max-w-5xl px-4 mt-16">
+        <div
+          class="inline-block mb-4 px-4 py-1 border border-gwen-cyan text-gwen-cyan font-hud text-xs tracking-[0.3em] bg-gwen-cyan/10 backdrop-blur-md rounded"
+        >
+          SYSTEM ONLINE // PORTFOLIO V2.0
+        </div>
+
+        <div
+          class="glitch-container font-display text-7xl md:text-9xl mb-2 leading-none select-none"
+        >
+          <span class="text-white relative z-10">RAJAT MUNGALI</span>
+          <span class="glitch-layer" aria-hidden="true">RAJAT MUNGALI</span>
+          <span class="glitch-layer" aria-hidden="true">RAJAT MUNGALI</span>
+        </div>
+
+        <h2
+          class="font-comic text-3xl md:text-5xl text-gray-400 mb-8 transform -rotate-2"
+        >
+          FRIENDLY NEIGHBORHOOD
+          <span class="text-spidey-red bg-white px-2 text-stroke-sm"
+            >DEVELOPER</span
+          >
+        </h2>
+
+        <div class="flex flex-wrap justify-center gap-4 mt-8">
+          <a
+            href="#projects"
+            class="group relative px-8 py-4 bg-spidey-red text-white font-comic text-2xl tracking-wider overflow-hidden comic-panel border-none hover:bg-red-600"
+          >
+            <span class="relative z-10 flex items-center gap-2"
+              >VIEW PROJECTS
+              <i
+                class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"
+              ></i
+            ></span>
+            <div
+              class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-30"
+            ></div>
+          </a>
+
+          <div class="flex gap-4 items-center ml-4">
+            <a
+              href="#"
+              class="w-12 h-12 rounded-full border-2 border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-white hover:bg-spidey-blue/20 transition-all hover:scale-110"
+              title="GitHub"
+            >
+              <i class="fab fa-github text-xl"></i>
+            </a>
+
+            <a
+              href="#"
+              class="w-12 h-12 rounded-full border-2 border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-white hover:bg-blue-600/20 transition-all hover:scale-110"
+              title="LinkedIn"
+            >
+              <i class="fab fa-linkedin text-xl"></i>
+            </a>
+
+            <a
+              href="https://leetcode.com/YOUR_LEETCODE_USERNAME/"
+              target="_blank"
+              class="w-12 h-12 rounded-full border-2 border-[#5a6370] flex items-center justify-center text-[#d1d5db] hover:text-white hover:border-white transition-all hover:scale-110"
+              title="LeetCode"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 256 256"
+                class="w-6 h-6"
+                fill="#d1d5db"
+              >
+                <path
+                  d="M147.573 37.698c-4.77-4.77-12.496-4.77-17.265 0L62.42 105.586c-18.73 18.73-18.73 49.137 0 67.867l67.868 67.868c4.77 4.77 12.496 4.77 17.265 0 4.77-4.77 4.77-12.496 0-17.265l-67.868-67.868c-9.2-9.2-9.2-24.128 0-33.328l67.888-67.868c4.77-4.769 4.77-12.495 0-17.264z"
+                />
+                <path
+                  d="M201.333 85.333H128a10.667 10.667 0 100 21.334h73.333a10.667 10.667 0 100-21.334z"
+                />
+                <path
+                  d="M224 128c0-5.891-4.776-10.667-10.667-10.667H128a10.667 10.667 0 100 21.334h84.667C219.224 138.667 224 133.891 224 128z"
+                />
+              </svg>
+            </a>
+
+            <a
+              href="#"
+              class="w-12 h-12 rounded-full border-2 border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-white hover:bg-sky-500/20 transition-all hover:scale-110"
+              title="Twitter"
+            >
+              <i class="fab fa-twitter text-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="absolute top-1/4 left-10 hidden lg:block animate-float">
+        <div
+          class="w-64 p-4 border-l-2 border-gwen-pink bg-black/60 backdrop-blur-sm font-hud text-xs text-gray-300"
+        >
+          <div class="text-gwen-pink font-bold mb-1">CURRENT OBJECTIVE</div>
+          <p>
+            Building responsive, high-performance web applications with a
+            cinematic touch.
+          </p>
+          <div class="mt-2 h-1 bg-gray-700 w-full">
+            <div class="h-full w-3/4 bg-gwen-pink animate-pulse"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="py-24 bg-miles-black relative overflow-hidden">
+      <div
+        class="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-spidey-dark-blue/20 to-transparent pointer-events-none"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-16">
+          <div class="w-full md:w-1/3 relative group">
+            <div
+              class="absolute -inset-2 bg-gradient-to-r from-spidey-red to-spidey-blue opacity-75 blur-lg group-hover:opacity-100 transition duration-1000"
+            ></div>
+            <div
+              class="relative comic-panel bg-gray-800 aspect-[3/4] overflow-hidden"
+            >
+              <img
+                src="IMG_20251215_223207_448.webp"
+                alt="Profile"
+                class="w-full h-full object-cover filter grayscale contrast-125 group-hover:grayscale-0 transition duration-500"
+              />
+
+              <div
+                class="absolute inset-0 bg-[linear-gradient(transparent_2px,rgba(0,0,0,0.5)_2px)] bg-[length:100%_4px] pointer-events-none opacity-20"
+              ></div>
+              <div class="absolute bottom-4 left-4">
+                <span
+                  class="bg-spidey-red text-white font-comic px-2 py-1 text-xl transform -rotate-2 inline-block border border-black"
+                  >SECRET IDENTITY</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="w-full md:w-2/3">
+            <h2
+              class="font-display text-6xl text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500 mb-6"
+            >
+              BEHIND THE <span class="text-spidey-red">MASK</span>
+            </h2>
+            <div
+              class="font-sans text-gray-300 text-lg leading-relaxed space-y-6 border-l-4 border-spidey-blue pl-6"
+            >
+              <p id="about-text-1">
+                I'm a full-stack developer based in New York (digitally
+                speaking). Just like a certain wall-crawler, I believe in using
+                my powers for good—building accessible, performant, and stunning
+                web experiences.
+              </p>
+              <p id="about-text-2">
+                When I'm not swinging between frameworks or fighting bugs in the
+                codebase, I'm exploring new technologies and pushing the
+                boundaries of creative frontend development.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+              <div
+                class="group bg-gray-900/80 backdrop-blur-sm p-4 border border-gray-800 rounded-xl text-center cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:bg-gray-800 hover:border-spidey-blue/50 hover:shadow-[0_0_15px_rgba(32,75,155,0.3)]"
+              >
+                <div
+                  class="font-display text-4xl text-spidey-red mb-1 group-hover:scale-110 transition-transform duration-300"
+                >
+                  3+
+                </div>
+                <div
+                  class="font-hud text-xs text-gray-400 uppercase tracking-[0.2em] group-hover:text-white transition-colors"
+                >
+                  Years XP
+                </div>
+              </div>
+
+              <div
+                class="group bg-gray-900/80 backdrop-blur-sm p-4 border border-gray-800 rounded-xl text-center cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:bg-gray-800 hover:border-spidey-red/50 hover:shadow-[0_0_15px_rgba(230,36,41,0.3)]"
+              >
+                <div
+                  class="font-display text-4xl text-spidey-red mb-1 group-hover:scale-110 transition-transform duration-300"
+                >
+                  50+
+                </div>
+                <div
+                  class="font-hud text-xs text-gray-400 uppercase tracking-[0.2em] group-hover:text-white transition-colors"
+                >
+                  Projects
+                </div>
+              </div>
+
+              <div
+                class="group bg-gray-900/80 backdrop-blur-sm p-4 border border-gray-800 rounded-xl text-center cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:bg-gray-800 hover:border-gwen-pink/50 hover:shadow-[0_0_15px_rgba(255,0,128,0.3)]"
+              >
+                <div
+                  class="font-display text-4xl text-spidey-red mb-1 group-hover:scale-110 transition-transform duration-300"
+                >
+                  100%
+                </div>
+                <div
+                  class="font-hud text-xs text-gray-400 uppercase tracking-[0.2em] group-hover:text-white transition-colors"
+                >
+                  Coffee
+                </div>
+              </div>
+
+              <div
+                class="group bg-gray-900/80 backdrop-blur-sm p-4 border border-gray-800 rounded-xl text-center cursor-default transition-all duration-300 ease-out hover:-translate-y-2 hover:bg-gray-800 hover:border-neon-green/50 hover:shadow-[0_0_15px_rgba(0,255,65,0.3)]"
+              >
+                <div
+                  class="font-display text-4xl text-spidey-red mb-1 group-hover:scale-110 transition-transform duration-300"
+                >
+                  ∞
+                </div>
+                <div
+                  class="font-hud text-xs text-gray-400 uppercase tracking-[0.2em] group-hover:text-white transition-colors"
+                >
+                  Ideas
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="py-20 bg-spidey-dark-blue relative">
+      <div class="absolute inset-0 bg-hex-grid opacity-30"></div>
+
+      <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="text-center mb-16">
+          <span
+            class="text-gwen-cyan font-hud tracking-[0.5em] text-sm uppercase"
+          >
+            Tech Stack Analysis
+          </span>
+          <h2
+            class="font-comic text-5xl md:text-6xl text-white mt-2 text-shadow-lg"
+          >
+            WEB <span class="text-gwen-cyan">GADGETRY</span>
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            class="holo-card p-6 rounded-lg group hover:-translate-y-2 transition-transform duration-300"
+          >
+            <div
+              class="flex items-center justify-between mb-6 border-b border-cyan-500/30 pb-2"
+            >
+              <h3 class="font-hud text-2xl font-bold text-cyan-400">
+                FRONTEND
+              </h3>
+              <i class="fas fa-code text-cyan-400 animate-pulse"></i>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+              <div
+                class="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-cyan-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(227,76,38,0.8)] transition-all duration-300"
+                  alt="HTML5"
+                />
+                <span class="font-mono text-[10px] text-gray-300">HTML</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-cyan-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(38,77,228,0.8)] transition-all duration-300"
+                  alt="CSS3"
+                />
+                <span class="font-mono text-[10px] text-gray-300">CSS</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-cyan-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                  class="w-14 h-14 rounded group-hover/item:drop-shadow-[0_0_8px_rgba(240,219,79,0.8)] transition-all duration-300"
+                  alt="JS"
+                />
+                <span class="font-mono text-[10px] text-gray-300">JS</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-cyan-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(0,122,204,0.8)] transition-all duration-300"
+                  alt="TypeScript"
+                />
+                <span class="font-mono text-[10px] text-gray-300">TS</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-cyan-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(97,218,251,0.8)] transition-all duration-300"
+                  alt="React"
+                />
+                <span class="font-mono text-[10px] text-gray-300">React</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-cyan-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/threejs/threejs-original.svg"
+                  class="w-14 h-14 invert group-hover/item:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-300"
+                  alt="Three.js"
+                />
+                <span class="font-mono text-[10px] text-gray-300"
+                  >Three.js</span
+                >
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-cyan-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)] transition-all duration-300"
+                  alt="Tailwind"
+                />
+                <span class="font-mono text-[10px] text-gray-300"
+                  >Tailwind</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="holo-card p-6 rounded-lg group hover:-translate-y-2 transition-transform duration-300 border-red-500/30"
+          >
+            <div
+              class="flex items-center justify-between mb-6 border-b border-red-500/30 pb-2"
+            >
+              <h3 class="font-hud text-2xl font-bold text-spidey-red">
+                BACKEND
+              </h3>
+              <i class="fas fa-server text-spidey-red animate-pulse"></i>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div
+                class="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-red-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(131,205,41,0.8)] transition-all duration-300"
+                  alt="Node.js"
+                />
+                <span class="font-mono text-xs text-gray-300">Node.js</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-red-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(255,212,59,0.8)] transition-all duration-300"
+                  alt="Python"
+                />
+                <span class="font-mono text-xs text-gray-300">Python</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-red-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(51,103,145,0.8)] transition-all duration-300"
+                  alt="PostgreSQL"
+                />
+                <span class="font-mono text-xs text-gray-300">Postgres</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-red-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"
+                  class="w-14 h-14 invert group-hover/item:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-300"
+                  alt="Express"
+                />
+                <span class="font-mono text-xs text-gray-300">Express</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="holo-card p-6 rounded-lg group hover:-translate-y-2 transition-transform duration-300 border-yellow-500/30"
+          >
+            <div
+              class="flex items-center justify-between mb-6 border-b border-yellow-500/30 pb-2"
+            >
+              <h3 class="font-hud text-2xl font-bold text-yellow-400">
+                UTILITIES
+              </h3>
+              <i class="fas fa-tools text-yellow-400 animate-pulse"></i>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div
+                class="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-yellow-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(240,80,50,0.8)] transition-all duration-300"
+                  alt="Git"
+                />
+                <span class="font-mono text-xs text-gray-300">Git</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-yellow-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                  class="w-14 h-14 invert group-hover/item:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all duration-300"
+                  alt="GitHub"
+                />
+                <span class="font-mono text-xs text-gray-300">GitHub</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-yellow-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(255,153,0,0.8)] transition-all duration-300"
+                  alt="AWS"
+                />
+                <span class="font-mono text-xs text-gray-300">AWS</span>
+              </div>
+
+              <div
+                class="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-yellow-500/10 transition-colors group/item"
+              >
+                <img
+                  src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg"
+                  class="w-14 h-14 group-hover/item:drop-shadow-[0_0_8px_rgba(255,153,0,0.8)] transition-all duration-300"
+                  alt="Docker"
+                />
+                <span class="font-mono text-xs text-gray-300">Docker</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section
+      id="projects"
+      class="py-24 bg-white relative clip-angled pb-40 overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 bg-halftone opacity-10 pointer-events-none"
+      ></div>
+
+      <div
+        class="absolute top-0 right-0 w-1/3 h-full bg-spidey-red/5 skew-x-12 pointer-events-none"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div
+          class="flex flex-col md:flex-row items-center gap-4 mb-16 justify-center md:justify-start"
+        >
+          <div
+            class="bg-black text-white font-comic text-xl px-6 py-3 transform -rotate-2 border-2 border-spidey-red shadow-[5px_5px_0px_#E62429] hover:rotate-0 transition-transform duration-300"
+          >
+            MISSION LOGS
+          </div>
+          <h2
+            class="font-comic text-5xl md:text-6xl text-black uppercase tracking-tighter text-center md:text-left"
+          >
+            WEB
+            <span
+              class="text-transparent bg-clip-text bg-gradient-to-r from-spidey-red to-spidey-blue"
+              >SLINGING</span
+            >
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          <div
+            class="group relative bg-black border-4 border-black shadow-[8px_8px_0px_#E62429] hover:shadow-[12px_12px_0px_#E62429] transition-all duration-300 transform hover:-translate-y-2"
+          >
+            <div class="h-48 overflow-hidden relative border-b-4 border-black">
+              <img
+                src="Screenshot 2025-12-26 015307.png"
+                class="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 scale-100 group-hover:scale-110"
+                alt="Project 1"
+              />
+              <div
+                class="absolute top-0 right-0 bg-spidey-red text-white font-comic text-xs px-3 py-1 border-l-2 border-b-2 border-black"
+              >
+                TOP SECRET
+              </div>
+            </div>
+
+            <div class="p-6 relative overflow-hidden">
+              <div class="absolute top-0 right-0 p-4 opacity-10">
+                <i
+                  class="fas fa-spider text-6xl text-white transform rotate-45"
+                ></i>
+              </div>
+
+              <h3
+                class="font-comic text-3xl text-white mb-2 group-hover:text-spidey-red transition-colors"
+              >
+                Decision Analysis Powered By n8n
+              </h3>
+              <p
+                class="font-mono text-gray-400 text-sm mb-4 leading-relaxed border-l-2 border-spidey-red pl-3"
+              >
+                A full-stack e-commerce platform featuring real-time inventory
+                tracking and secure payment gateways.
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span
+                  class="px-2 py-1 bg-gray-800 border border-gray-700 text-xs text-spidey-red font-bold font-mono uppercase rounded"
+                  >n8n</span
+                >
+                <span
+                  class="px-2 py-1 bg-gray-800 border border-gray-700 text-xs text-spidey-blue font-bold font-mono uppercase rounded"
+                  >LLM</span
+                >
+                <span
+                  class="px-2 py-1 bg-gray-800 border border-gray-700 text-xs text-yellow-400 font-bold font-mono uppercase rounded"
+                  >Notion</span
+                >
+              </div>
+
+              <a
+                href="https://github.com/RajatMungali/decision-analysis-n8n.git"
+                class="inline-flex items-center gap-2 bg-spidey-red text-white font-comic px-4 py-2 border-2 border-white hover:bg-white hover:text-black hover:border-black transition-all duration-300 w-full justify-center"
+              >
+                <i class="fab fa-github text-xl"></i>
+                <span>ACCESS REPO</span>
+              </a>
+            </div>
+          </div>
+
+          <div
+            class="group relative bg-white border-4 border-black shadow-[8px_8px_0px_#00E0FF] hover:shadow-[12px_12px_0px_#ff0055] transition-all duration-300 transform hover:-translate-y-2"
+          >
+            <div class="h-48 overflow-hidden relative border-b-4 border-black">
+              <img
+                src="Screenshot 2025-07-17 155300 copy.png"
+                class="w-full h-full object-cover filter sepia group-hover:sepia-0 transition-all duration-500 scale-100 group-hover:scale-110"
+                alt="Project 2"
+              />
+              <div
+                class="absolute top-0 left-0 bg-gwen-pink text-white font-comic text-xs px-3 py-1 border-r-2 border-b-2 border-black"
+              >
+                BETA TEST
+              </div>
+            </div>
+
+            <div class="p-6 relative">
+              <div class="absolute top-0 right-0 p-4 opacity-10">
+                <i
+                  class="fas fa-bolt text-6xl text-black transform -rotate-12"
+                ></i>
+              </div>
+
+              <h3
+                class="font-comic text-3xl text-black mb-2 group-hover:text-gwen-pink transition-colors"
+              >
+                Gramfinder
+              </h3>
+              <p
+                class="font-mono text-gray-600 text-sm mb-4 leading-relaxed border-l-2 border-gwen-cyan pl-3"
+              >
+                Real-time video synchronization app allowing multiple users to
+                watch content simultaneously.
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span
+                  class="px-2 py-1 bg-gray-100 border border-black text-xs text-black font-bold font-mono uppercase rounded shadow-[2px_2px_0px_#ff0055]"
+                  >React</span
+                >
+                <span
+                  class="px-2 py-1 bg-gray-100 border border-black text-xs text-black font-bold font-mono uppercase rounded shadow-[2px_2px_0px_#00E0FF]"
+                  >Python</span
+                >
+                <span
+                  class="px-2 py-1 bg-gray-100 border border-black text-xs text-black font-bold font-mono uppercase rounded shadow-[2px_2px_0px_#00E0FF]"
+                  >Typescript</span
+                >
+              </div>
+
+              <a
+                href="https://github.com/RajatMungali/insta-leads"
+                class="inline-flex items-center gap-2 bg-black text-white font-comic px-4 py-2 border-2 border-black hover:bg-gwen-pink hover:border-black transition-all duration-300 w-full justify-center"
+              >
+                <i class="fab fa-github text-xl"></i>
+                <span>VIEW SOURCE</span>
+              </a>
+            </div>
+          </div>
+
+          <div
+            class="group relative bg-spidey-dark-blue border-4 border-yellow-400 shadow-[8px_8px_0px_#FACC15] hover:shadow-[12px_12px_0px_#FACC15] transition-all duration-300 transform hover:-translate-y-2"
+          >
+            <div
+              class="h-48 overflow-hidden relative border-b-4 border-yellow-400"
+            >
+              <img
+                src=""
+                class="w-full h-full object-cover filter hue-rotate-90 group-hover:hue-rotate-0 transition-all duration-500 scale-100 group-hover:scale-110"
+                alt="Project 3"
+              />
+            </div>
+
+            <div class="p-6 relative">
+              <h3
+                class="font-comic text-3xl text-yellow-400 mb-2 tracking-widest"
+              >
+                Big O
+              </h3>
+              <p
+                class="font-mono text-cyan-200 text-sm mb-4 leading-relaxed border-l-2 border-yellow-400 pl-3"
+              >
+                High-performance analytics dashboard processing large datasets
+                with interactive visualizations.
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span
+                  class="px-2 py-1 bg-blue-900/50 border border-yellow-400/50 text-xs text-yellow-400 font-bold font-mono uppercase rounded"
+                  >React</span
+                >
+                <span
+                  class="px-2 py-1 bg-blue-900/50 border border-yellow-400/50 text-xs text-yellow-400 font-bold font-mono uppercase rounded"
+                  >MongoDB</span
+                >
+                <span
+                  class="px-2 py-1 bg-blue-900/50 border border-yellow-400/50 text-xs text-yellow-400 font-bold font-mono uppercase rounded"
+                  >Flask</span
+                >
+              </div>
+
+              <a
+                href="https://github.com/RajatMungali/OnionStorageSIH_Homepage2"
+                class="inline-flex items-center gap-2 bg-yellow-400 text-black font-comic px-4 py-2 border-2 border-yellow-400 hover:bg-transparent hover:text-yellow-400 transition-all duration-300 w-full justify-center"
+              >
+                <i class="fab fa-github text-xl"></i>
+                <span>INITIATE CLONE</span>
+              </a>
+            </div>
+          </div>
+
+          <div
+            class="group relative bg-white border-4 border-black shadow-[8px_8px_0px_#000000] hover:shadow-[12px_12px_0px_#000000] transition-all duration-300 transform hover:-translate-y-2 pattern-dots-sm"
+          >
+            <div class="h-48 overflow-hidden relative border-b-4 border-black">
+              <img
+                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1000&auto=format&fit=crop"
+                class="w-full h-full object-cover filter contrast-125 group-hover:contrast-100 transition-all duration-500 scale-100 group-hover:scale-110"
+                alt="Project 4"
+              />
+
+              <div
+                class="absolute -bottom-4 -right-4 bg-white border-2 border-black rounded-[50%] px-4 py-2 font-comic text-xs z-10 hidden group-hover:block animate-bounce"
+              >
+                POW!
+              </div>
+            </div>
+
+            <div class="p-6 relative bg-white">
+              <h3 class="font-comic text-3xl text-black mb-2 uppercase">
+                Task-Master
+              </h3>
+              <p
+                class="font-mono text-gray-700 text-sm mb-4 leading-relaxed border-l-2 border-black pl-3"
+              >
+                An AI-powered productivity tool that organizes daily workflows
+                and automates routine schedules.
+              </p>
+
+              <div class="flex flex-wrap gap-2 mb-6">
+                <span
+                  class="px-2 py-1 border-2 border-black text-xs text-black font-bold font-mono uppercase bg-yellow-200 rounded-none transform -rotate-2"
+                  >OpenAI</span
+                >
+                <span
+                  class="px-2 py-1 border-2 border-black text-xs text-black font-bold font-mono uppercase bg-blue-200 rounded-none transform rotate-1"
+                  >Next.js</span
+                >
+              </div>
+
+              <a
+                href="#"
+                class="inline-flex items-center gap-2 bg-spidey-blue text-white font-comic px-4 py-2 border-2 border-black hover:bg-spidey-red transition-all duration-300 w-full justify-center shadow-[4px_4px_0px_black]"
+              >
+                <i class="fab fa-github text-xl"></i>
+                <span>CHECK CODE</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section
+      id="achievements"
+      class="py-24 bg-gray-900 relative border-t-4 border-black"
+    >
+      <div
+        class="absolute inset-0 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:20px_20px] opacity-20 pointer-events-none"
+      ></div>
+
+      <div class="max-w-7xl mx-auto px-4 relative z-10">
+        <div class="text-center mb-16">
+          <div
+            class="inline-block bg-yellow-400 text-black font-comic text-sm px-4 py-1 transform -rotate-1 border-2 border-black shadow-[4px_4px_0px_white] mb-4"
+          >
+            UNLOCKED CONTENT
+          </div>
+          <h2
+            class="font-comic text-5xl md:text-6xl text-white uppercase tracking-wider text-shadow-lg"
+          >
+            Achievements
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div
+            class="group relative bg-gray-800 rounded-xl overflow-hidden border-2 border-gray-700 hover:border-green-400 transition-all duration-300 hover:-translate-y-2"
+          >
+            <div
+              class="h-40 bg-gray-700 relative overflow-hidden flex items-center justify-center"
+            >
+              <i
+                class="fas fa-leaf text-6xl text-gray-600 group-hover:text-green-400 transition-colors duration-300"
+              ></i>
+
+              <div
+                class="absolute top-4 right-4 bg-green-500 text-black font-comic text-xs px-2 py-1 rounded border border-black shadow-[2px_2px_0px_black]"
+              >
+                FINALIST
+              </div>
+            </div>
+
+            <div class="p-6">
+              <h3
+                class="font-comic text-2xl text-white mb-1 group-hover:text-green-400 transition-colors"
+              >
+                SIH 2025
+              </h3>
+              <p
+                class="font-mono text-xs text-gray-400 mb-4 uppercase tracking-widest"
+              >
+                Smart India Hackathon
+              </p>
+
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <i
+                    class="fas fa-check-circle text-green-500 mt-1 text-xs"
+                  ></i>
+                  <span class="font-sans text-gray-300 text-sm leading-relaxed">
+                    Selected in <strong>Top 5</strong> out of 500+ teams
+                    nationwide.
+                  </span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <i
+                    class="fas fa-check-circle text-green-500 mt-1 text-xs"
+                  ></i>
+                  <span class="font-sans text-gray-300 text-sm leading-relaxed">
+                    Developing a solution for the
+                    <strong>Onion Rotting</strong> crisis.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            class="group relative bg-gray-800 rounded-xl overflow-hidden border-2 border-gray-700 hover:border-cyan-400 transition-all duration-300 hover:-translate-y-2"
+          >
+            <div
+              class="h-40 bg-gray-700 relative overflow-hidden flex items-center justify-center"
+            >
+              <i
+                class="fas fa-rocket text-6xl text-gray-600 group-hover:text-cyan-400 transition-colors duration-300"
+              ></i>
+
+              <div
+                class="absolute top-4 right-4 bg-cyan-400 text-black font-comic text-xs px-2 py-1 rounded border border-black shadow-[2px_2px_0px_black]"
+              >
+                NATIONAL MERIT
+              </div>
+            </div>
+
+            <div class="p-6">
+              <h3
+                class="font-comic text-2xl text-white mb-1 group-hover:text-cyan-400 transition-colors"
+              >
+                KALAM CONCLAVE
+              </h3>
+              <p
+                class="font-mono text-xs text-gray-400 mb-4 uppercase tracking-widest"
+              >
+                ISRO-Backed Event
+              </p>
+
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <i class="fas fa-star text-cyan-400 mt-1 text-xs"></i>
+                  <span class="font-sans text-gray-300 text-sm leading-relaxed">
+                    Merit position among <strong>400+ teams</strong>.
+                  </span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <i class="fas fa-star text-cyan-400 mt-1 text-xs"></i>
+                  <span class="font-sans text-gray-300 text-sm leading-relaxed">
+                    Recognized by <strong>Kalam Family</strong> for IoT
+                    innovation.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div
+            class="group relative bg-gray-800 rounded-xl overflow-hidden border-2 border-gray-700 hover:border-spidey-red transition-all duration-300 hover:-translate-y-2"
+          >
+            <div
+              class="h-40 bg-gray-700 relative overflow-hidden flex items-center justify-center"
+            >
+              <i
+                class="fas fa-brain text-6xl text-gray-600 group-hover:text-spidey-red transition-colors duration-300"
+              ></i>
+
+              <div
+                class="absolute top-4 right-4 bg-spidey-red text-white font-comic text-xs px-2 py-1 rounded border border-black shadow-[2px_2px_0px_black]"
+              >
+                4TH PLACE
+              </div>
+            </div>
+
+            <div class="p-6">
+              <h3
+                class="font-comic text-2xl text-white mb-1 group-hover:text-spidey-red transition-colors"
+              >
+                MINDSYNC
+              </h3>
+              <p
+                class="font-mono text-xs text-gray-400 mb-4 uppercase tracking-widest"
+              >
+                AI Automation
+              </p>
+
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <i class="fas fa-trophy text-spidey-red mt-1 text-xs"></i>
+                  <span class="font-sans text-gray-300 text-sm leading-relaxed">
+                    Ranked <strong>4th of 100+</strong> teams.
+                  </span>
+                </li>
+                <li class="flex items-start gap-3">
+                  <i class="fas fa-trophy text-spidey-red mt-1 text-xs"></i>
+                  <span class="font-sans text-gray-300 text-sm leading-relaxed">
+                    Built functional ML prototype in under
+                    <strong>48 hours</strong>.
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="contact"
+      class="bg-gray-900 pt-24 pb-10 relative overflow-hidden"
+    >
+      <div
+        class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-spidey-red/20 blur-[100px] rounded-full pointer-events-none"
+      ></div>
+
+      <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <div
+          class="w-20 h-20 mx-auto bg-spidey-red rounded-full flex items-center justify-center mb-8 animate-pulse-neon shadow-[0_0_50px_#E62429]"
+        >
+          <i class="fas fa-spider text-white text-4xl"></i>
+        </div>
+
+        <h2 class="font-comic text-5xl md:text-7xl text-white mb-6">
+          SEND A <span class="text-spidey-red">SIGNAL</span>
+        </h2>
+        <p class="font-sans text-gray-400 mb-12 max-w-lg mx-auto">
+          Available for freelance missions, full-time patrols, or just a
+          friendly chat about the multiverse.
+        </p>
+
+        <a
+          href="mailto:hello@example.com"
+          class="inline-block px-10 py-5 bg-transparent border-2 border-gwen-pink text-gwen-pink font-hud text-xl tracking-[0.2em] hover:bg-gwen-pink hover:text-black transition-all hover:shadow-[0_0_20px_#FF0080] mb-20"
+        >
+          INITIATE_CONTACT_PROTOCOL
+        </a>
+
+        <div
+          class="border-t border-gray-800 pt-10 flex flex-col md:flex-row justify-between items-center gap-6"
+        >
+          <div class="text-left">
+            <div class="font-comic text-2xl text-white">RAJAT MUNGALI</div>
+            <div class="font-mono text-xs text-gray-600">
+              © 2024 WEB-SLINGER PORTFOLIO
+            </div>
+          </div>
+
+          <div class="flex gap-6">
+            <a
+              href="#"
+              class="text-gray-500 hover:text-spidey-red transition-colors text-2xl"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a
+              href="#"
+              class="text-gray-500 hover:text-white transition-colors text-2xl"
+              ><i class="fab fa-github"></i
+            ></a>
+            <a
+              href="#"
+              class="text-gray-500 hover:text-spidey-blue transition-colors text-2xl"
+              ><i class="fab fa-linkedin"></i
+            ></a>
+            <a
+              href="#"
+              class="text-gray-500 hover:text-gwen-pink transition-colors text-2xl"
+              ><i class="fab fa-instagram"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="absolute bottom-0 w-full h-20 bg-[url('https://www.transparenttextures.com/patterns/city-lights.png')] opacity-20 pointer-events-none"
+      ></div>
+    </section>
+
+    <script>
+      // --- Intersection Observer for Fade-In Animations ---
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.remove("opacity-0", "translate-y-10");
+              entry.target.classList.add("opacity-100", "translate-y-0");
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      // Apply to comic panels and skill cards
+      document.querySelectorAll(".comic-panel, .holo-card").forEach((el) => {
+        el.classList.add(
+          "opacity-0",
+          "translate-y-10",
+          "transition-all",
+          "duration-700"
+        );
+        observer.observe(el);
+      });
+
+      // --- Glitch Text Randomizer ---
+      const glitchText = document.querySelector(".glitch-container");
+      setInterval(() => {
+        if (Math.random() > 0.95) {
+          glitchText.style.transform = `translate(${Math.random() * 4 - 2}px, ${
+            Math.random() * 4 - 2
+          }px)`;
+          setTimeout(() => {
+            glitchText.style.transform = "translate(0, 0)";
+          }, 100);
+        }
+      }, 2000);
+
+      // --- Mobile Menu Toggle ---
+      const menuBtn = document.getElementById("menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      menuBtn.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      // Close mobile menu when a link is clicked
+      mobileMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.add("hidden");
+        });
+      });
+    </script>
+  </body>
+</html>
